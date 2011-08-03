@@ -1,0 +1,17 @@
+MIH (Mesos-in-Hadoop) lets you launch a Mesos cluster as a Hadoop job, for
+example to easily experiment with Mesos frameworks like Spark on an existing
+Hadoop cluster.
+
+MIH requires Hadoop 0.20.203 or later. It should also work with the Cloudera
+distribution of Hadoop version 3 or later. On older Hadoops (e.g. 0.20.2),
+MIH will run but Hadoop does not properly clean up processes spawned by a job
+when the job finishes, so you risk having processes left on the nodes.
+
+To build MIH, export HADOOP_HOME=<path to your Hadoop directory> and run make.
+
+To run, use HADOOP_HOME/bin/hadoop mih.jar <number of slots>.
+
+MIH will acquire the given number of slots from Hadoop (as a set of long
+running map tasks) and launch a Mesos cluster inside them, then print out
+the master URL for that cluster. To stop the cluster, kill the corresponding
+Hadoop job with HADOOP_HOME/bin/hadoop job -kill.

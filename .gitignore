@@ -1,0 +1,8 @@
+*~
+*.swp
+*.iml
+.DS_Store
+.project
+.classpath
+classes
+mih.jar

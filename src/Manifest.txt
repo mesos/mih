@@ -1,0 +1,1 @@
+Main-Class: org.apache.mesos.mih.MIH
