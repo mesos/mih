@@ -9,9 +9,13 @@ when the job finishes, so you risk having processes left on the nodes.
 
 To build MIH, export HADOOP_HOME=<path to your Hadoop directory> and run make.
 
-To run, use HADOOP_HOME/bin/hadoop mih.jar <number of slots>.
+To run, export MESOS_HOME=<location where you installed Mesos on the slaves>
+and use HADOOP_HOME/bin/hadoop mih.jar <number of slots>.
 
 MIH will acquire the given number of slots from Hadoop (as a set of long
 running map tasks) and launch a Mesos cluster inside them, then print out
 the master URL for that cluster. To stop the cluster, kill the corresponding
 Hadoop job with HADOOP_HOME/bin/hadoop job -kill.
+
+You can also provide a second argument to mih.jar for the memory to use per
+slot (in megabytes). By default, it's 1024 MB.

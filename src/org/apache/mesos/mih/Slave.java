@@ -62,11 +62,11 @@ public class Slave {
   // Start mesos-slave with a given master URL and number of Hadoop slots
   void launchMesosSlave(String mesosUrl, int numSlots) throws IOException {
     String mesosHome = MIH.getMesosHome(conf);
+    int memPerSlot = MIH.getMemPerSlot(conf);
     String[] command = new String[] {
       mesosHome + "/bin/mesos-slave",
       "--url=" + mesosUrl,
-      "--cpus=" + numSlots,
-      "--mem=" + (1024 * numSlots)
+      "--resources=cpus:" + numSlots + ";mem:" + (memPerSlot * numSlots)
     };
     proc = Runtime.getRuntime().exec(command);
 

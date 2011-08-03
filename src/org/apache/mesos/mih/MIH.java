@@ -12,11 +12,14 @@ import org.apache.hadoop.mapred.lib.NullOutputFormat;
 
 public class MIH {
   public static void main(String[] args) throws Exception {
-    if (args.length != 1) {
-      System.err.println("Usage: mih <numSlots>");
+    if (args.length < 1 || args.length > 2) {
+      System.err.println("Usage: mih <numSlots> [<memPerSlot>]");
       System.exit(1);
     }
-    int numTasks = Integer.parseInt(args[0]);
+    int numSlots = Integer.parseInt(args[0]);
+    int memPerSlot = 1024;
+    if (args.length >= 2)
+      memPerSlot = Integer.parseInt(args[1]);
 
     String mesosHome = System.getenv("MESOS_HOME");
     if (mesosHome == null) {
@@ -32,10 +35,11 @@ public class MIH {
     conf.setOutputFormat(NullOutputFormat.class);
     conf.setMapOutputKeyClass(NullWritable.class);
     conf.setMapOutputValueClass(NullWritable.class);
-    conf.setNumMapTasks(numTasks);
+    conf.setNumMapTasks(numSlots);
     conf.setNumReduceTasks(0);
     conf.setSpeculativeExecution(false);
     conf.set("mesos.home", mesosHome);
+    conf.setInt("mesos.mem.per.slot", memPerSlot);
     JobClient client = new JobClient(conf);
     RunningJob job = client.submitJob(conf);
     System.out.println("Submitted job to Hadoop; waiting for it to start");
@@ -185,5 +189,9 @@ public class MIH {
 
   public static String getMesosHome(JobConf conf) {
     return conf.get("mesos.home");
+  }
+
+  public static int getMemPerSlot(JobConf conf) {
+    return conf.getInt("mesos.mem.per.slot", 1024);
   }
 }
