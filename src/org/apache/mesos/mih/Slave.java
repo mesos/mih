@@ -65,7 +65,7 @@ public class Slave {
     int memPerSlot = MIH.getMemPerSlot(conf);
     String[] command = new String[] {
       mesosHome + "/bin/mesos-slave",
-      "--url=" + mesosUrl,
+      "--master=" + mesosUrl,
       "--resources=cpus:" + numSlots + ";mem:" + (memPerSlot * numSlots)
     };
     proc = Runtime.getRuntime().exec(command);
